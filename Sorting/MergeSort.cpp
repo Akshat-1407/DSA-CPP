@@ -3,51 +3,51 @@
 using namespace std;
 
 void merge(vector<int>& arr, int left, int mid, int right) {
-    vector<int> C(arr.size());
+    vector<int> temp;
     
     int i = left;
     int j = mid + 1;
-    int k = left;
 
     while(i <= mid && j <= right) {
         if (arr[i] < arr[j]) {
-            C[k] = arr[i];
-            k++; i++;
+            temp.push_back(arr[i]);
+            i++;
         }
         else {
-            C[k] = arr[j];
-            k++; j++;
+            temp.push_back(arr[j]);
+            j++;
         }
     }
 
     while (i <= mid) {
-        C[k] = arr[i];
-        k++; i++;
+        temp.push_back(arr[i]);
+        i++;
     }
 
     while (j <= right) {
-        C[k] = arr[j];
-        k++; j++;
+        temp.push_back(arr[j]);
+        j++;
     }
 
-    for (i = left; i <= right; i++) {
-        arr[i] = C[i];
+    for (int idx = 0; idx < temp.size(); idx++) {
+        arr[idx+left] = temp[idx];
     }
 }
 
 void mergeSort(vector<int>& arr, int left, int right) {    
+    if (left >= right)
+        return;
+
     int mid = left + (right - left) / 2;
 
-    if (left < right) {
-        mergeSort(arr, left, mid);
-        mergeSort(arr, mid + 1, right);
-        merge(arr, left, mid, right);
-    }
+    mergeSort(arr, left, mid);
+    mergeSort(arr, mid + 1, right);
+    merge(arr, left, mid, right);
 }
 
 int main() {
     
-    vector<int> arr = {38, 27, 43, 10};
+    vector<int> arr = {38, 27, 43, 10, 9, 82, 3};
     int n = arr.size();
 
     mergeSort(arr, 0, n - 1);

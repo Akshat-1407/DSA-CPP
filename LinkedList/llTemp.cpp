@@ -1,40 +1,42 @@
 #include <iostream>
+#include <string>
 
 using namespace std;
 
-
+// Template class for Node
+template <typename T>
 class Node {
 public:
-    int data;
-    Node* next;
+    T data;
+    Node<T>* next;
 
-    Node(int data) {
+    Node(T data) {
         this->data = data;
         this->next = nullptr;
     }
 
-    Node(int data, Node* next) {
+    Node(T data, Node<T>* next) {
         this->data = data;
         this->next = next;
     }
 };
 
+// Template class for List
+template <typename T>
 class List {
 private:
-    Node* head;
+    Node<T>* head;
 
 public:
     List() {
         head = nullptr;
     }
 
-
-    void push_front(int data) {
-        Node* newNode = new Node(data);
+    void push_front(T data) {
+        Node<T>* newNode = new Node<T>(data);
         newNode->next = head;
         head = newNode;
     }
-
 
     void pop_front() {
         if (head == nullptr) {
@@ -42,21 +44,20 @@ public:
             return;
         }
 
-        Node* temp = head;
+        Node<T>* temp = head;
         head = head->next;
         delete temp;
     }
 
-
-    void push_back(int data) {
-        Node* newNode = new Node(data);
+    void push_back(T data) {
+        Node<T>* newNode = new Node<T>(data);
 
         if (head == nullptr) {
             head = newNode;
             return;
         }
 
-        Node* temp = head; 
+        Node<T>* temp = head; 
 
         while(temp->next != nullptr) {
             temp = temp->next;
@@ -64,7 +65,6 @@ public:
 
         temp->next = newNode;
     }
-
 
     void pop_back() {       
         if (head == nullptr) {
@@ -78,7 +78,7 @@ public:
             return;
         }
 
-        Node* temp = head; 
+        Node<T>* temp = head; 
         while(temp->next->next != nullptr) {
             temp = temp->next;
         }
@@ -87,14 +87,13 @@ public:
         temp->next = nullptr; 
     }
 
-
-    void insert_at_position(int position, int value) {
+    void insert_at_position(int position, T value) {
         if (position <= 1) {
             push_front(value);
             return;
         }
 
-        Node* temp = head;
+        Node<T>* temp = head;
 
         for (int i = 1; i < position - 1 && temp != nullptr; i++) {
             temp = temp->next;
@@ -105,50 +104,46 @@ public:
             return;
         }
 
-        Node* newNode = new Node(value);
+        Node<T>* newNode = new Node<T>(value);
         newNode->next = temp->next;
         temp->next = newNode;
     }
-
     
-    void insert_after(Node* previousNode, int value) {
+    void insert_after(Node<T>* previousNode, T value) {
         if (previousNode == nullptr) {
             cout << "Invalid Insertion.\n";
             return;
         }
         
-        Node* nextNode = previousNode->next;
-        Node* newNode = new Node(value);
+        Node<T>* nextNode = previousNode->next;
+        Node<T>* newNode = new Node<T>(value);
         previousNode->next = newNode;
         newNode->next = nextNode;
     }
 
-
-    int front() {
+    T front() {
         if (head == nullptr) {
             cout << "List is empty\n";
-            return -1;
+            return T(); // Returns default value of type T
         }
         return head->data;
     }
 
-
-    int back() {
+    T back() {
         if (head == nullptr) {
             cout << "List is empty\n";
-            return -1; 
+            return T(); // Returns default value of type T
         }
-        Node* temp = head;
+        Node<T>* temp = head;
         while(temp->next != nullptr) {
             temp = temp->next;
         } 
         return temp->data;       
     }
 
-
     int size() {
         int count = 0;
-        Node* temp = head;
+        Node<T>* temp = head;
 
         while (temp != nullptr) {
             count++;
@@ -158,30 +153,27 @@ public:
         return count;
     }
 
-
     bool empty() {
         return head == nullptr;
     }
 
-
     void clear() {
-        Node* temp = head;
+        Node<T>* temp = head;
         while(temp != nullptr) {
-            Node* x = temp;
+            Node<T>* x = temp;
             temp = temp->next;
             delete x;
         }
         head = nullptr;
     }
 
-
-    Node* middle_node() {
+    Node<T>* middle_node() {
         if (head == nullptr || head->next == nullptr) {
             return head;
         }
         
-        Node* slow = head;
-        Node* fast = head;
+        Node<T>* slow = head;
+        Node<T>* fast = head;
 
         while(fast != nullptr && fast->next != nullptr) {
             slow = slow->next;
@@ -190,15 +182,14 @@ public:
         return slow;
     }
 
-
-    Node* reverse_list() {
+    Node<T>* reverse_list() {
         if(head == nullptr || head->next == nullptr) {
             return head;
         }
 
-        Node* currNode = head;
-        Node* prevNode = nullptr;
-        Node* nextNode = currNode->next;
+        Node<T>* currNode = head;
+        Node<T>* prevNode = nullptr;
+        Node<T>* nextNode = currNode->next;
 
         while(currNode != nullptr) {
             currNode->next = prevNode;
@@ -212,8 +203,8 @@ public:
         return head;
     }
 
-    bool searchLL(int x) {
-        Node* temp = head;
+    bool searchLL(T x) {
+        Node<T>* temp = head;
         while (temp != nullptr) {
             if(temp->data == x) {
                 return true;
@@ -223,8 +214,7 @@ public:
         return false;
     }
 
-
-    Node* concatenate(Node* head1) {
+    Node<T>* concatenate(Node<T>* head1) {
         if (head == nullptr && head1 == nullptr) 
             return nullptr;
         if (head == nullptr)
@@ -232,7 +222,7 @@ public:
         if (head1 == nullptr)
             return head;
         
-        Node* temp = head;
+        Node<T>* temp = head;
         while (temp->next != nullptr) {
             temp = temp->next;
         }
@@ -241,10 +231,9 @@ public:
         return head;
     }
 
-
     bool has_cycle() {
-        Node* fast = head;
-        Node* slow = head;
+        Node<T>* fast = head;
+        Node<T>* slow = head;
 
         while(fast != nullptr && fast->next != nullptr) {
             slow = slow->next;
@@ -257,10 +246,9 @@ public:
         return false;
     }
 
-
-    Node* detect_cycle() {
-        Node* fast = head;
-        Node* slow = head;
+    Node<T>* detect_cycle() {
+        Node<T>* fast = head;
+        Node<T>* slow = head;
 
         while(fast != nullptr && fast->next != nullptr) {
             slow = slow->next;
@@ -280,9 +268,9 @@ public:
         return nullptr;
     }
 
-    Node* mergeTwoLists(Node* list1, Node* list2) {
-        Node* dummyHead = new Node(-1);
-        Node* temp = dummyHead;
+    Node<T>* mergeTwoLists(Node<T>* list1, Node<T>* list2) {
+        Node<T>* dummyHead = new Node<T>(T()); // Initialized with default value of T
+        Node<T>* temp = dummyHead;
         
         while(list1 != nullptr && list2 != nullptr) {
             if(list1->data < list2->data) {
@@ -304,20 +292,18 @@ public:
         }
 
         return dummyHead->next;
-    };
+    }
 
-
-    Node* oddEvenList() {
+    Node<T>* oddEvenList() {
         if(head == nullptr || head->next == nullptr) {
             return head;
         }
 
-        Node* odd = head;
-        Node* even = head->next;
-        Node* evenHead = head->next;
+        Node<T>* odd = head;
+        Node<T>* even = head->next;
+        Node<T>* evenHead = head->next;
 
         while(even != nullptr && even->next != nullptr) {
-
             odd->next = odd->next->next;
             even->next = even->next->next;
 
@@ -330,9 +316,8 @@ public:
         return head;
     }
 
-
     void display() {
-        Node* temp = head;
+        Node<T>* temp = head;
 
         while (temp != nullptr) {
             cout << temp->data << " -> ";
@@ -342,19 +327,31 @@ public:
         cout << "NULL\n";
     }
 
-
     ~List() {
         while (head != nullptr) {
             pop_front();
         }
     }
-
 };
 
-
 int main() {
+    // Example usage with strings
+    List<string> strList;
+    strList.push_back("Hello");
+    strList.push_back("Template");
+    strList.push_back("World");
+    
+    cout << "String List: ";
+    strList.display();
 
-
+    // Example usage with integers
+    List<int> intList;
+    intList.push_front(30);
+    intList.push_front(20);
+    intList.push_front(10);
+    
+    cout << "Integer List: ";
+    intList.display();
 
     return 0;
 }

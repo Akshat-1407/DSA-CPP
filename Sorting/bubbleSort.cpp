@@ -3,6 +3,7 @@
 
 using namespace std;
 
+// Iterative
 void bubbleSort(vector<int> &arr) {
     
     bool swapped;
@@ -20,6 +21,40 @@ void bubbleSort(vector<int> &arr) {
         if (!swapped)
             break;
     }
+}
+
+
+// Recursive version (outer loop recursive)
+void BubbleSort(int arr[], int n) {
+    // Base case
+    if (n == 1)
+        return;
+
+    // One pass of bubble sort
+    for (int i = 0; i < n - 1; i++) {
+        if (arr[i] > arr[i + 1])
+            swap(arr[i], arr[i + 1]);
+    }
+
+    // Sort remaining n-1 elements
+    BubbleSort(arr, n - 1);
+}
+
+
+// Fully recursive version (both loops recursive)
+void bubble(int arr[], int n, int i) {
+    if (n == 1)
+        return;
+
+    if (i == n - 1) {
+        bubble(arr, n - 1, 0);
+        return;
+    }
+
+    if (arr[i] > arr[i + 1])
+        swap(arr[i], arr[i + 1]);
+
+    bubble(arr, n, i + 1);
 }
 
 

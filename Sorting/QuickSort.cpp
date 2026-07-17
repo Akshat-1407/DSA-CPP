@@ -10,12 +10,12 @@ int Partition(int arr[], int low, int high) {
         do {
             i = i + 1;
         }
-        while (arr[i] < pivot);
+        while (i <= high && arr[i] < pivot);
         
         do {
             j = j - 1;
         }
-        while (arr[j] > pivot);
+        while (j >= low && arr[j] > pivot);
 
         if (i < j) {
             swap(arr[i], arr[j]);
